@@ -1,15 +1,10 @@
 from talon import Module, ui
 from ctypes import windll
 import logging
-try:
-    # https://github.com/mrob95/py-VirtualDesktopAccessor
-    # talon/bin/pip.bat install pyvda
-    import pyvda
-except ImportError:
-    import traceback
-    traceback.print_exc()
-    print("Couldn't import module pyvda.")
-    pass
+
+# https://github.com/mrob95/py-VirtualDesktopAccessor
+# talon/bin/pip.bat install pyvda
+import pyvda
 
 ASFW_ANY = -1
 
