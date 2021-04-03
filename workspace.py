@@ -15,6 +15,11 @@ def go_to_n(n):
     windll.user32.AllowSetForegroundWindow(ASFW_ANY)
     pyvda.GoToDesktopNumber(n)
 
+def get_windows_by_z():
+    windows = {w.id: w for w in ui.windows()}
+    windows_by_z = [windows[z] for z in pyvda.ViewGetByZOrder()]
+    return windows_by_z
+
 mod = Module()
 
 @mod.action_class
@@ -53,3 +58,20 @@ class Actions:
         """Unpin the current window"""
         wndh = ui.active_window().id
         pyvda.UnPinWindow(wndh)
+
+    def window_next(n: int):
+        """Switch to the window that is `n` windows beneath the active window"""
+        windows_by_z = get_windows_by_z()
+        target = windows_by_z[n % len(windows_by_z)]
+        target.app.focus()
+        pyvda.ViewSwitchTo(target.id)
+
+    def window_focus_pos(x: int, y: int):
+        """Switch to the highest window that contains the point (x, y)"""
+        windows = {w.id: w for w in ui.windows()}
+        windows_by_z = [windows[hwnd] for hwnd in pyvda.ViewGetByZOrder()]
+        for w in windows_by_z:
+            if w.rect.contains(x, y):
+                w.focus()
+                pyvda.ViewSwitchTo(w.id)
+                return
