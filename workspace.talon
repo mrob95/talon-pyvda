@@ -16,3 +16,5 @@ window unpin: user.window_unpin()
 window next [<number>]: user.window_next(number or 1)
 (window | win) (folk | focus) (left | lease): user.window_focus_pos(400, 501)
 (window | win) (folk | focus) (right | ross): user.window_focus_pos(1441, 551)
+
+focus {user.windows}: user.focus_window(windows)

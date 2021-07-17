@@ -1,5 +1,4 @@
-from talon import Module, ui
-from ctypes import windll
+from talon import Module, ui, Context
 import logging
 
 # https://github.com/mrob95/py-VirtualDesktopAccessor
@@ -10,6 +9,8 @@ from pyvda import AppView, get_apps_by_z_order, VirtualDesktop
 logging.getLogger("comtypes").setLevel(logging.INFO)
 
 mod = Module()
+ctx = Context()
+
 
 @mod.action_class
 class Actions:
@@ -62,3 +63,36 @@ class Actions:
                 # This seems more robust
                 a.switch_to()
                 return
+
+    def focus_window(hwnd: str):
+        """"""
+        window_map[hwnd].focus()
+
+mod.list("windows")
+
+APP_NAME_MAP = {
+    "Visual Studio Code": "code",
+    "cmd.exe": "command",
+    "brave.exe": "brave",
+    "WindowsTerminal.exe": "terminal",
+    "explorer.exe": "explorer",
+    "Windows Explorer": "explorer",
+}
+
+window_map = {}
+
+def refresh_windows_in_workspace(window):
+    global window_map
+    relevant = [w.hwnd for w in get_apps_by_z_order()]
+    if len(relevant) > 1:
+        # Don't count current window
+        relevant = relevant[1:]
+    windows = [w for w in ui.windows() if w.id in set(relevant)]
+    window_map = {str(w.id): w for w in windows}
+    ctx.lists["user.windows"] = {
+        APP_NAME_MAP.get(w.app.name, w.app.name): str(w.id)
+        for w in windows
+    }
+
+# ui.register("win_title", refresh_windows_in_workspace)
+ui.register("win_focus", refresh_windows_in_workspace)
