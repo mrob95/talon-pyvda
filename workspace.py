@@ -46,6 +46,14 @@ class Actions:
         """Unpin the current window"""
         AppView.current().unpin()
 
+    def app_pin():
+        """Pin the current app, making all its windows active in all workspaces"""
+        AppView.current().pin_app()
+
+    def app_unpin():
+        """Unpin the current app"""
+        AppView.current().unpin_app()
+
     def window_next(n: int):
         """Switch to the window that is `n` windows beneath the active window"""
         windows = {w.id: w for w in ui.windows()}
@@ -95,4 +103,4 @@ def refresh_windows_in_workspace(window):
     }
 
 # ui.register("win_title", refresh_windows_in_workspace)
-ui.register("win_focus", refresh_windows_in_workspace)
+# ui.register("win_focus", refresh_windows_in_workspace)
