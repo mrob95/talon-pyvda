@@ -16,4 +16,8 @@ window unpin: user.window_unpin()
 application pin: user.app_pin()
 application unpin: user.app_unpin()
 
+(window | win) (folk | focus) <number>: user.window_focus_grid_pos(number)
+(window | win) (folk | focus) left: user.window_focus_grid_pos(4)
+(window | win) (folk | focus) right: user.window_focus_grid_pos(6)
+
 focus next [<number>]: user.window_next(number or 1)
