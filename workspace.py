@@ -55,7 +55,7 @@ class Actions:
         """Unpin the current app"""
         AppView.current().unpin_app()
 
-    def window_next(n: int):
+    def window_focus_next(n: int):
         """Switch to the window that is `n` windows beneath the active window"""
         windows = {w.id: w for w in ui.windows()}
         windows_by_z = get_apps_by_z_order()
